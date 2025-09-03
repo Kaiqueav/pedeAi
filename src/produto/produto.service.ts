@@ -27,6 +27,19 @@ export class ProdutoService {
     if (!produto) {
       throw new NotFoundException(`produto não encontrado ${id}`)
     }
-    return produto
+    return produto;
   }
+  async update (id:string, updateProdutoDto: CreateProdutoDto): Promise<Produto>{
+    const produto = await this.produtoRepository.preload({
+      id: id,
+      ...updateProdutoDto
+    })
+    if(!produto){
+      throw new NotFoundException(`produto não encontrado${id}`)
+    }
+    return this.produtoRepository.save(produto)
+  }
+
 }
+
+
