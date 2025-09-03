@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Produto } from './entities/produto.entity';
 import { Repository } from 'typeorm';
 import { CreateProdutoDto } from './dtos/create-produto.dto';
+import { UpdateProdutoDto } from './dtos/update-produto.dto';
 
 @Injectable()
 export class ProdutoService {
@@ -29,7 +30,7 @@ export class ProdutoService {
     }
     return produto;
   }
-  async update (id:string, updateProdutoDto: CreateProdutoDto): Promise<Produto>{
+  async update (id:string, updateProdutoDto: UpdateProdutoDto): Promise<Produto>{
     const produto = await this.produtoRepository.preload({
       id: id,
       ...updateProdutoDto
