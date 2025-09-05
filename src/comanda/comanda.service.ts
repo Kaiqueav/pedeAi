@@ -67,7 +67,8 @@ export class ComandaService {
     return this.comandaRepository.save(comanda);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comanda`;
+  async remove(id: string):Promise<void> {
+    const comanda = await this.findOne(id)
+    await this.comandaRepository.remove(comanda);
   }
 }
