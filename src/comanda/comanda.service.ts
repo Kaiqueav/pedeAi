@@ -28,7 +28,11 @@ export class ComandaService {
    });
    return this.comandaRepository.save(novaComanda);
   }
-
+ async findAll(): Promise<Comanda[]> {
+    return this.comandaRepository.find({
+      relations: ['mesa'], // Carrega a mesa junto para sabermos a qual mesa pertence
+    });
+  }
 //buscando uma comanda especifica viu
   async findOne(id: string): Promise<Comanda &{ total: number}>{
       const comanda = await this.comandaRepository.findOne({
