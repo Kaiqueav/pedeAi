@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateComandaDto } from './dto/update-comanda.dto';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { Comanda, StatusComanda } from './entities/comanda.entity';
 import { MesaService } from 'src/mesa/mesa.service';
 import { Mesa } from 'src/mesa/entities/mesa.entity';
@@ -30,8 +30,20 @@ export class ComandaService {
   }
 
 //buscando uma comanda especifica viu
-  async findOne(id: string) {
-    
+  async findOne(id: string): Promise<Comanda &{ total: number}>{
+      const comanda = await this.comandaRepository.findOne({
+        where:{id},
+        relations:[
+          'mesa',
+          'garcom',
+          'pedidos.itensPedido',
+          'pedidos.itensPedido.produto'
+        ],
+      });
+      if(!comanda){
+        throw new NotFoundException(`Comanda com o id ${id} não encontrada`)
+      }
+    //calculando valor da comanda
     return `This action returns a #${id} comanda`;
   }
 
