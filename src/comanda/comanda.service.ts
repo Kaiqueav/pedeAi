@@ -54,8 +54,17 @@ export class ComandaService {
     return{ ...comanda,total: parseFloat(total.toFixed(2)) };
   }
 
-  update(id: number, updateComandaDto: UpdateComandaDto) {
-    return `This action updates a #${id} comanda`;
+ async update(id: string, updateComandaDto: UpdateComandaDto):Promise<Comanda> {
+  const comanda = await this.comandaRepository.preload({
+    id,
+    ...updateComandaDto
+  })
+  if(!comanda){
+    throw new NotFoundException(`comanda com o id ${id} não localizada`)
+
+  }
+
+    return this.comandaRepository.save(comanda);
   }
 
   remove(id: number) {
