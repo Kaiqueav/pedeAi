@@ -44,7 +44,14 @@ export class ComandaService {
         throw new NotFoundException(`Comanda com o id ${id} não encontrada`)
       }
     //calculando valor da comanda
-    return `This action returns a #${id} comanda`;
+    const total = comanda.pedidos.reduce((acc,pedido)=>{
+      const totalPedido = pedido.itensPedido.reduce(
+        (subAcc, item)=> subAcc + item.quantidade*+item.precoUnitario,
+        0
+      );
+      return acc + totalPedido;
+    }, 0)
+    return{ ...comanda,total: parseFloat(total.toFixed(2)) };
   }
 
   update(id: number, updateComandaDto: UpdateComandaDto) {
