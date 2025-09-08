@@ -59,10 +59,23 @@ export class PedidosService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pedido`;
-  }
+   async findOne(id: string): Promise<Pedido> {
+    const pedido = await this.pedidoRepository.findOne({
+      where: { id },
+      relations: [
+        'comanda',
+        'comanda.mesa',
+        'itensPedido',
+        'itensPedido.produto',
+      ],
+    });
 
+    if (!pedido) {
+      throw new NotFoundException(`Pedido com ID #${id} não encontrado.`);
+    }
+
+    return pedido;
+  }
   update(id: number, updatePedidoDto: UpdatePedidoDto) {
     return `This action updates a #${id} pedido`;
   }
