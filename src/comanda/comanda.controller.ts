@@ -20,9 +20,12 @@ export class ComandaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateComandaDto: UpdateComandaDto) {
+  update(
+    @Param('id') id: string, 
+    @Body() updateComandaDto: UpdateComandaDto) 
+    {
     return this.comandaService.update(id, updateComandaDto);
-  }
+    }
 
  
 }
