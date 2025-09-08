@@ -8,6 +8,7 @@ import { Produto } from 'src/produto/entities/produto.entity';
 import { ComandaService } from 'src/comanda/comanda.service';
 import { MesaService } from 'src/mesa/mesa.service';
 import { ItemPedido } from 'src/item-pedido/entities/item-pedido.entity';
+import { UpdatePedidoStatusDto } from './dto/update-pedidos-status.dto';
 
 @Injectable()
 export class PedidosService {
@@ -76,8 +77,13 @@ export class PedidosService {
 
     return pedido;
   }
-  update(id: number, updatePedidoDto: UpdatePedidoDto) {
-    return `This action updates a #${id} pedido`;
+ async updateStatus(
+    id: string,
+    updatePedidoStatusDto: UpdatePedidoStatusDto,
+  ): Promise<Pedido> {
+    const pedido = await this.findOne(id);
+    pedido.status = updatePedidoStatusDto.status;
+    return this.pedidoRepository.save(pedido);
   }
 
   remove(id: number) {
