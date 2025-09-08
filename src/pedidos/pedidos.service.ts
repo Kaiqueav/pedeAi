@@ -2,12 +2,12 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Pedido } from './entities/pedido.entity';
+import { Pedido, StatusPedido } from './entities/pedido.entity';
 import { In, Repository } from 'typeorm';
 import { Produto } from 'src/produto/entities/produto.entity';
 import { ComandaService } from 'src/comanda/comanda.service';
 import { MesaService } from 'src/mesa/mesa.service';
-import { ItemPedido } from 'src/item-pedido/entities/item-pedido.entity';
+import { ItemPedido } from 'src/pedidos/entities/item-pedido.entity';
 import { UpdatePedidoStatusDto } from './dto/update-pedidos-status.dto';
 
 @Injectable()
@@ -86,7 +86,17 @@ export class PedidosService {
     return this.pedidoRepository.save(pedido);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pedido`;
+   async cancel(id: string): Promise<Pedido> {
+    const pedido = await this.findOne(id);
+
+    // REGRA DE NEGÓCIO: Impede o cancelamento de um pedido que já está sendo preparado ou pronto.
+    if (pedido.status !== StatusPedido.RECEBIDO) {
+      throw new BadRequestException(
+        `Não é possível cancelar um pedido que já está com status "${pedido.status}"`,
+      );
+    }
+
+    pedido.status = StatusPedido.CANCELADO;
+    return this.pedidoRepository.save(pedido);
   }
 }
