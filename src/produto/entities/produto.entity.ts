@@ -25,4 +25,5 @@ export class Produto{
   categoria: CategoriaProduto;
     @Column({default:true})
     disponivel: string
+    itensPedido: any;
 }
