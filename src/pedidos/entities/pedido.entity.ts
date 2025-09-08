@@ -1,11 +1,12 @@
 import { Comanda } from "src/comanda/entities/comanda.entity";
-import { ItemPedido } from "src/item-pedido/entities/item-pedido.entity";
+import { ItemPedido } from "src/pedidos/entities/item-pedido.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum StatusPedido {
   RECEBIDO = 'recebido',
   EM_PREPARO = 'em_preparo',
   PRONTO = 'pronto',
+  CANCELADO = 'cancelado',
 }
 
 @Entity({name: 'pedidos'})
