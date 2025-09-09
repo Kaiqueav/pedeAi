@@ -4,10 +4,12 @@ import { Not, Repository } from 'typeorm';
 import { Comanda, StatusComanda } from './entities/comanda.entity';
 import { MesaService } from 'src/mesa/mesa.service';
 import { Mesa } from 'src/mesa/entities/mesa.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class ComandaService {
   constructor(
+    @InjectRepository(Comanda)
     private readonly comandaRepository: Repository<Comanda>,
     
   ){}

@@ -12,6 +12,8 @@ import { ProdutoController } from './produto.controller';
     TypeOrmModule.forFeature([Produto]) 
   ],
   controllers: [ProdutoController],
-  providers: [ProdutoService],
+  providers: [
+    ProdutoService
+  ],
 })
 export class ProdutoModule {}

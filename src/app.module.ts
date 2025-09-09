@@ -8,11 +8,36 @@ import { ProdutoModule } from './produto/produto.module';
 import { MesaModule } from './mesa/mesa.module';
 import { ComandaModule } from './comanda/comanda.module';
 import { PedidosModule } from './pedidos/pedidos.module';
-import { ItemPedidoModule } from './item-pedido/item-pedido.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 
 @Module({
-  imports: [UsuarioModule, ProdutoModule, MesaModule, ComandaModule, PedidosModule, ItemPedidoModule],
-  controllers: [AppController, ProdutoController],
-  providers: [AppService, ProdutoService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        entities: [__dirname + '/../**/*.entity{.ts,.js}'], 
+        synchronize: true, 
+      }),
+    }),
+    UsuarioModule,
+     ProdutoModule, 
+     MesaModule, 
+     ComandaModule, 
+     PedidosModule],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

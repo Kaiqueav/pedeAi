@@ -1,7 +1,7 @@
 import { Pedido } from "src/pedidos/entities/pedido.entity";
 import { Produto } from "src/produto/entities/produto.entity";
-import { Column, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+@Entity({name: 'item_pedido'})
 export class ItemPedido {
      @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -15,12 +15,10 @@ export class ItemPedido {
   @Column({ type: 'text', nullable: true })
   observacao: string;
 
-  // Relação: Muitos itens podem pertencer a UM pedido
   @ManyToOne(() => Pedido, (pedido) => pedido.itensPedido)
   @JoinColumn({ name: 'id_pedido' })
   pedido: Pedido;
 
-  // Relação: Muitos itens podem se referir a UM produto
   @ManyToOne(() => Produto, (produto) => produto.itensPedido)
   @JoinColumn({ name: 'id_produto' })
   produto: Produto;

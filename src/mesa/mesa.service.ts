@@ -3,10 +3,13 @@ import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
 import { Repository } from 'typeorm';
 import { Mesa } from './entities/mesa.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class MesaService {
-  constructor( private readonly mesaRepository: Repository<Mesa>){}
+  constructor( 
+    @InjectRepository(Mesa)
+    private readonly mesaRepository: Repository<Mesa>){}
   create(createMesaDto: CreateMesaDto) {
     const mesa = this.mesaRepository.create(createMesaDto);
     return this.mesaRepository.save(mesa);

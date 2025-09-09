@@ -1,36 +1,36 @@
-version: '3.8'
+
 
 services:
-  # Serviço da nossa API NestJS
+  
   api:
-    build: . # Constrói a imagem usando o Dockerfile na pasta atual
+    build: . 
     container_name: gestao_mesas_api
     ports:
-      - "3000:3000" # Mapeia a porta 3000 do container para a porta 3000 da sua máquina
+      - "3000:3000" 
     depends_on:
-      - db # Diz ao Docker para esperar o serviço 'db' estar pronto antes de iniciar a API
+      - db 
     environment:
-      # Passa as variáveis de ambiente para a nossa aplicação NestJS
-      - DB_HOST=db # IMPORTANTE: O host é o nome do serviço do banco ('db'), não 'localhost'
+      
+      - DB_HOST=db 
       - DB_TYPE=mysql
       - DB_PORT=3306
       - DB_USERNAME=root
-      - DB_PASSWORD=sua_senha_forte # Use uma senha forte
+      - DB_PASSWORD=sua_senha_forte 
       - DB_DATABASE=gestao_mesas
 
-  # Serviço do Banco de Dados MySQL
+  
   db:
-    image: mysql:8.0 # Usa a imagem oficial do MySQL
+    image: mysql:8.0
     container_name: gestao_mesas_db
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=sua_senha_forte # Mesma senha forte
-      - MYSQL_DATABASE=gestao_mesas # Cria o banco de dados na inicialização
+      - MYSQL_ROOT_PASSWORD=sua_senha_forte 
+      - MYSQL_DATABASE=gestao_mesas 
     volumes:
-      - mysql_data:/var/lib/mysql # Garante que os dados do banco persistam
+      - mysql_data:/var/lib/mysql 
     ports:
-      - "3306:3306" # Mapeia a porta do MySQL para a sua máquina (para acesso via DBeaver, etc)
+      - "3307:3306" 
 
-# Define o volume nomeado para persistência dos dados
+
 volumes:
   mysql_data:

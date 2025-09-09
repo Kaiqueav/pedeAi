@@ -5,7 +5,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 export class Mesa {
     @PrimaryGeneratedColumn()
     id:number;
-    @Column()
+    @Column({unique: true})
     numero:number;
     
     @OneToMany(()=> Comanda,(comanda)=> comanda.mesa)

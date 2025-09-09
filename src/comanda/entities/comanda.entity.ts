@@ -8,7 +8,7 @@ export enum StatusComanda {
   PAGA = 'paga',
 }
 
-@Entity({name:'comanda'})
+@Entity({name:'comandas'})
 export class Comanda {
     @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -26,6 +26,7 @@ export class Comanda {
   
   @ManyToOne(() => Mesa, (mesa) => mesa.comandas)
   @JoinColumn({ name: 'id_mesa' }) 
+  mesa:Mesa;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.comandas, { nullable: true })
   @JoinColumn({ name: 'id_usuario_garcom' }) // Define a coluna da chave estrangeira
@@ -34,5 +35,5 @@ export class Comanda {
   // Relação: Uma comanda pode ter muitos pedidos
   @OneToMany(() => Pedido, (pedido) => pedido.comanda)
   pedidos: Pedido[];
-    mesa: any;
+  
 }

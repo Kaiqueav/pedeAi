@@ -24,12 +24,10 @@ export class Pedido {
   @CreateDateColumn({ name: 'data_pedido' })
   dataPedido: Date;
 
-  // Relação: Muitos pedidos podem pertencer a UMA comanda
+  @OneToMany(() => ItemPedido, (item) => item.pedido, { cascade: true })
+  itensPedido: ItemPedido[];
+
   @ManyToOne(() => Comanda, (comanda) => comanda.pedidos)
   @JoinColumn({ name: 'id_comanda' })
   comanda: Comanda;
-
-  // Relação: Um pedido pode ter muitos itens
-  @OneToMany(() => ItemPedido, (item) => item.pedido, { cascade: true })
-  itensPedido: ItemPedido[];
 }
