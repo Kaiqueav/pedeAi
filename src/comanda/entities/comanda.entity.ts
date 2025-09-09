@@ -29,7 +29,7 @@ export class Comanda {
   mesa:Mesa;
 
   @ManyToOne(() => Usuario, (usuario) => usuario.comandas, { nullable: true })
-  @JoinColumn({ name: 'id_usuario_garcom' }) // Define a coluna da chave estrangeira
+  @JoinColumn({ name: 'id_usuario_garcom' }) 
   garcom: Usuario;
 
   // Relação: Uma comanda pode ter muitos pedidos

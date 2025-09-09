@@ -1,36 +1,35 @@
-
-
 services:
-  
   api:
-    build: . 
+    build: .
     container_name: gestao_mesas_api
     ports:
-      - "3000:3000" 
+      - "3000:3000"
     depends_on:
-      - db 
+      db:
+        condition: service_healthy # <-- Adicione esta condição
     environment:
-      
-      - DB_HOST=db 
+      - DB_HOST=db
       - DB_TYPE=mysql
       - DB_PORT=3306
       - DB_USERNAME=root
-      - DB_PASSWORD=sua_senha_forte 
+      - DB_PASSWORD=sua_senha_forte
       - DB_DATABASE=gestao_mesas
 
-  
   db:
     image: mysql:8.0
     container_name: gestao_mesas_db
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=sua_senha_forte 
-      - MYSQL_DATABASE=gestao_mesas 
+      - MYSQL_ROOT_PASSWORD=sua_senha_forte
+      - MYSQL_DATABASE=gestao_mesas
     volumes:
-      - mysql_data:/var/lib/mysql 
+      - mysql_data:/var/lib/mysql
     ports:
-      - "3307:3306" 
-
+      - "3307:3306"
+    healthcheck: # <-- Adicione esta verificação de saúde
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 volumes:
   mysql_data:

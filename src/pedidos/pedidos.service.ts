@@ -89,7 +89,7 @@ export class PedidosService {
    async cancel(id: string): Promise<Pedido> {
     const pedido = await this.findOne(id);
 
-    // REGRA DE NEGÓCIO: Impede o cancelamento de um pedido que já está sendo preparado ou pronto.
+   
     if (pedido.status !== StatusPedido.RECEBIDO) {
       throw new BadRequestException(
         `Não é possível cancelar um pedido que já está com status "${pedido.status}"`,

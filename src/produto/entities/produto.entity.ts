@@ -6,12 +6,12 @@ export enum CategoriaProduto{
     SOBREMESA='sobremesa',
     ENTRADA='entrada'
 }
-@Entity({ name: 'produto'})
+@Entity({ name: 'produtos'})
 export class Produto{
     @PrimaryGeneratedColumn('uuid')
     id: string
 
-    @Column({type:'text',length:200})
+    @Column({type:'varchar',length:200})
     nome: string
     @Column({type:'text', nullable: true})
     descricao: string
