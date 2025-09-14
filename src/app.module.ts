@@ -10,6 +10,7 @@ import { ComandaModule } from './comanda/comanda.module';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -36,7 +37,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
      ProdutoModule, 
      MesaModule, 
      ComandaModule, 
-     PedidosModule],
+     PedidosModule,
+      AuthModule,
+    ],
   controllers: [AppController],
   providers: [AppService],
 })
