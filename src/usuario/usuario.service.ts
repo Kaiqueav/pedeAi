@@ -40,6 +40,9 @@ export class UsuarioService {
              const { senha, ...result} = usuario;
              return result;
             }
+         async findOneByEmail(email: string): Promise<Usuario | undefined> {
+            return this.usuarioRepository.findOneBy({ email });
+             }
 
          async update(id: number, updateUsuarioDto: UpdateUsuarioDto): Promise<UsuarioResponseDto>{
             if(updateUsuarioDto.senha){
