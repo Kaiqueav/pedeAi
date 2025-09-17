@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
 import { Repository } from 'typeorm';
@@ -10,9 +10,18 @@ export class MesaService {
   constructor( 
     @InjectRepository(Mesa)
     private readonly mesaRepository: Repository<Mesa>){}
-  create(createMesaDto: CreateMesaDto) {
-    const mesa = this.mesaRepository.create(createMesaDto);
-    return this.mesaRepository.save(mesa);
+  async create(createMesaDto: CreateMesaDto) {
+    try {
+      const mesa = this.mesaRepository.create(createMesaDto);
+      return await this.mesaRepository.save(mesa);
+    } catch (error) {
+      // 2. Verifique se o erro é de entrada duplicada (código 23505 para Postgres, 1062 para MySQL)
+      if (error.code === 'ER_DUP_ENTRY' || error.code === '23505') {
+        throw new ConflictException(`A mesa com o número ${createMesaDto.numero} já existe.`);
+      }
+      // 3. Se for outro tipo de erro, lance um erro genérico
+      throw error;
+    }
   }
 
   findAll() {
@@ -28,6 +37,14 @@ export class MesaService {
     }
     return mesa;
   }
+  async findOneByNumero(numero: number): Promise<Mesa> {
+    const mesa = await this.mesaRepository.findOneBy({ numero: numero });
+    if (!mesa) {
+      throw new NotFoundException(`A mesa com o número ${numero} não foi encontrada.`);
+    }
+    return mesa;
+  }
+
 
   async update(id: number, updateMesaDto: UpdateMesaDto) {
     const mesa = await this.mesaRepository.preload({

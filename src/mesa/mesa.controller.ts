@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, ParseIntPipe } from '@nestjs/common';
 import { MesaService } from './mesa.service';
 import { CreateMesaDto } from './dto/create-mesa.dto';
 import { UpdateMesaDto } from './dto/update-mesa.dto';
@@ -22,6 +22,10 @@ export class MesaController {
     return this.mesaService.findOne(+id);
   }
 
+  @Get('numero/:numero')
+  findOneByNumero(@Param('numero', ParseIntPipe) numero: number) {
+    return this.mesaService.findOneByNumero(numero);
+  }
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMesaDto: UpdateMesaDto) {
     return this.mesaService.update(+id, updateMesaDto);
