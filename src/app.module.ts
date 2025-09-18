@@ -11,6 +11,7 @@ import { PedidosModule } from './pedidos/pedidos.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { EventsModule } from './events/events.module';
 
 
 @Module({
@@ -41,7 +42,8 @@ import { AuthModule } from './auth/auth.module';
      MesaModule, 
      ComandaModule, 
      PedidosModule,
-      AuthModule,
+     AuthModule,
+     EventsModule,
     ],
   controllers: [AppController],
   providers: [AppService],
