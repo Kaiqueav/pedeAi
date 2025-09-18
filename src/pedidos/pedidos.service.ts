@@ -9,9 +9,11 @@ import { ComandaService } from 'src/comanda/comanda.service';
 import { MesaService } from 'src/mesa/mesa.service';
 import { ItemPedido } from 'src/pedidos/entities/item-pedido.entity';
 import { UpdatePedidoStatusDto } from './dto/update-pedidos-status.dto';
+import { EventsGateway } from 'src/events/events.gateway';
 
 @Injectable()
 export class PedidosService {
+  eventsGateway: any;
   constructor(
     @InjectRepository(Pedido)
     private readonly  pedidoRepository: Repository<Pedido>,
@@ -42,7 +44,7 @@ export class PedidosService {
      const itemPedido = new ItemPedido();
       itemPedido.produto = produto;
       itemPedido.quantidade = itemDto.quantidade;
-      itemPedido.precoUnitario = produto.preco; // "Congelando" o preço
+      itemPedido.precoUnitario = produto.preco; 
       itemPedido.observacao = itemDto.observacao;
       itensDoPedido.push(itemPedido)
     
@@ -85,13 +87,20 @@ export class PedidosService {
   ): Promise<Pedido> {
     const pedido = await this.findOne(id);
     pedido.status = updatePedidoStatusDto.status;
-    return this.pedidoRepository.save(pedido);
+    
+    
+    const pedidoAtualizado = await this.pedidoRepository.save(pedido);
+
+ 
+    this.eventsGateway.emitirAtualizacaoStatus(id, pedidoAtualizado);
+    
+    return pedidoAtualizado;
   }
 
-   async cancel(id: string): Promise<Pedido> {
+
+  async cancel(id: string): Promise<Pedido> {
     const pedido = await this.findOne(id);
 
-   
     if (pedido.status !== StatusPedido.RECEBIDO) {
       throw new BadRequestException(
         `Não é possível cancelar um pedido que já está com status "${pedido.status}"`,
@@ -99,6 +108,12 @@ export class PedidosService {
     }
 
     pedido.status = StatusPedido.CANCELADO;
-    return this.pedidoRepository.save(pedido);
+    
+ 
+    const pedidoCancelado = await this.pedidoRepository.save(pedido);
+ 
+    this.eventsGateway.emitirAtualizacaoStatus(id, pedidoCancelado);
+
+    return pedidoCancelado;
   }
 }
