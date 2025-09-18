@@ -68,7 +68,9 @@ export class PedidosService {
         'comanda.mesa',
         'itensPedido',
         'itensPedido.produto',
-      ],
+      ],order:{
+        dataPedido: 'ASC'
+      }
     });
 
     if (!pedido) {
