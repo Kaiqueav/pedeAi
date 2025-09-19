@@ -13,7 +13,7 @@ import { EventsGateway } from 'src/events/events.gateway';
 
 @Injectable()
 export class PedidosService {
-  eventsGateway: any;
+ 
   constructor(
     @InjectRepository(Pedido)
     private readonly  pedidoRepository: Repository<Pedido>,
@@ -21,6 +21,7 @@ export class PedidosService {
     private readonly produtoRepository: Repository<Produto>,
     private readonly comandasService: ComandaService,
     private readonly mesaService: MesaService,
+    private readonly eventsGateway: EventsGateway,
   ){}
   async create(createPedidoDto: CreatePedidoDto) {
     const mesa = await this.mesaService.findOne(createPedidoDto.mesaId);
