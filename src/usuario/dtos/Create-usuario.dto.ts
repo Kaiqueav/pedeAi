@@ -19,7 +19,7 @@ export class CreateUsuarioDto{
     senha: string
 
     @IsNotEmpty()
-    @IsEnum(['admin', 'user'])
+    @IsEnum(Role, {message: ' role invalida'})
     role: Role
 
 }

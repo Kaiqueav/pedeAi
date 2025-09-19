@@ -31,7 +31,7 @@ import { EventsModule } from './events/events.module';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'], 
-         synchronize: true, 
+         synchronize: false, 
         ssl: {
           rejectUnauthorized: false 
         } 
