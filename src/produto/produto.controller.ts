@@ -1,15 +1,21 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Produto } from './entities/produto.entity';
 import { ProdutoService } from './produto.service';
 import { CreateProdutoDto } from './dtos/create-produto.dto';
 import { UpdateProdutoDto } from './dtos/update-produto.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/usuario/enums/role.enum';
 
 @Controller('produto')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class ProdutoController {
     constructor (private readonly produtoService: ProdutoService){}
 
     @Post()
+    @Roles(Role.ADMIN)
     create(@Body() createProdutoDto: CreateProdutoDto){
         return this.produtoService.create(createProdutoDto);
     }
@@ -24,6 +30,7 @@ export class ProdutoController {
     }
 
     @Patch(':id')
+    @Roles(Role.ADMIN) 
     update(
         @Param('id', ParseUUIDPipe)id:string,
         @Body() updateProdutoDto: UpdateProdutoDto,
@@ -31,6 +38,7 @@ export class ProdutoController {
         return this.produtoService.update(id, updateProdutoDto)
 }
 @Delete(':id')
+@Roles(Role.ADMIN) 
   @HttpCode(HttpStatus.NO_CONTENT) // Define o status de sucesso para 204
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.produtoService.remove(id);
