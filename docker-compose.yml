@@ -13,9 +13,9 @@ services:
       - DB_HOST=db
       - DB_TYPE=mysql
       - DB_PORT=3306
-      - DB_USERNAME=root
-      - DB_PASSWORD=sua_senha_forte
-      - DB_DATABASE=gestao_mesas
+      - DB_USERNAME=${DB_USERNAME} # Opcional, já vem do env_file
+      - DB_PASSWORD=${DB_PASSWORD} # Opcional, já vem do env_file
+      - DB_DATABASE=${DB_DATABASE}
 
   db:
     image: mysql:8.0
