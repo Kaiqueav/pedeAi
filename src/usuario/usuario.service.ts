@@ -16,23 +16,32 @@ export class UsuarioService {
         private readonly usuarioRepository: Repository<Usuario> ){}
 
         async onModuleInit() {
-        const adminEmail = 'admin@pedeai.com';
-        const adminExists = await this.usuarioRepository.findOneBy({ email: adminEmail });
-
-        if (!adminExists) {
-            this.logger.log('Utilizador Admin não encontrado. A criar...');
-            const adminUser = this.usuarioRepository.create({
-                nome: 'Administrador',
-                email: adminEmail,
-                senha: 'admin123', // A senha será 'hasheada' automaticamente pela entidade
-                role: Role.ADMIN,
+            await this.criarUtilizadorSeNaoExistir({
+               nome: 'Administrador',
+               email: 'admin@pedeai.com',
+               senha: 'admin123',
+               role: Role.ADMIN,
             });
-            await this.usuarioRepository.save(adminUser);
-            this.logger.log('Utilizador Admin criado com sucesso!');
-        } else {
-            this.logger.log('Utilizador Admin já existe.');
-        }
-    }
+
+            await this.criarUtilizadorSeNaoExistir({
+               nome: 'Garçom Padrão',
+               email: 'garcom@pedeai.com',
+               senha: 'garcom123',
+               role: Role.GARCOM,
+            });
+         }
+
+         private async criarUtilizadorSeNaoExistir(utilizadorDto: Partial<CreateUsuarioDto>) {
+         const utilizadorExiste = await this.usuarioRepository.findOneBy({ email: utilizadorDto.email });
+
+         if (!utilizadorExiste) {
+            this.logger.log(`Utilizador ${utilizadorDto.email} não encontrado. A criar...`);
+            const novoUtilizador = this.usuarioRepository.create(utilizadorDto);
+         
+            await this.usuarioRepository.save(novoUtilizador);
+            this.logger.log(`Utilizador ${utilizadorDto.email} criado com sucesso!`);
+         }
+       }
         async create( createUsuarioDto: CreateUsuarioDto): Promise<UsuarioResponseDto>{
            const senhaHash = await bcrypt.hash(createUsuarioDto.senha,10)
 
