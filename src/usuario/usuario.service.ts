@@ -15,33 +15,6 @@ export class UsuarioService {
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario> ){}
 
-        async onModuleInit() {
-            await this.criarUtilizadorSeNaoExistir({
-               nome: 'Administrador',
-               email: 'admin@pedeai.com',
-               senha: 'admin123',
-               role: Role.ADMIN,
-            });
-
-            await this.criarUtilizadorSeNaoExistir({
-               nome: 'Garçom Padrão',
-               email: 'garcom@pedeai.com',
-               senha: 'garcom123',
-               role: Role.GARCOM,
-            });
-         }
-
-         private async criarUtilizadorSeNaoExistir(utilizadorDto: Partial<CreateUsuarioDto>) {
-         const utilizadorExiste = await this.usuarioRepository.findOneBy({ email: utilizadorDto.email });
-
-         if (!utilizadorExiste) {
-            this.logger.log(`Utilizador ${utilizadorDto.email} não encontrado. A criar...`);
-            const novoUtilizador = this.usuarioRepository.create(utilizadorDto);
-         
-            await this.usuarioRepository.save(novoUtilizador);
-            this.logger.log(`Utilizador ${utilizadorDto.email} criado com sucesso!`);
-         }
-       }
         async create( createUsuarioDto: CreateUsuarioDto): Promise<UsuarioResponseDto>{
            const senhaHash = await bcrypt.hash(createUsuarioDto.senha,10)
 
