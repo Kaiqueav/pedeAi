@@ -22,4 +22,4 @@ COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 
-CMD npm run migration:run && npm run start:prod
+CMD npm run migration:run:prod && npm run start:prod
