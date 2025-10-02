@@ -15,24 +15,6 @@ export class UsuarioService {
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario> ){}
 
-        async onModuleInit() {
-        const adminEmail = 'admin@pedeai.com';
-        const adminExists = await this.usuarioRepository.findOneBy({ email: adminEmail });
-
-        if (!adminExists) {
-            this.logger.log('Utilizador Admin não encontrado. A criar...');
-            const adminUser = this.usuarioRepository.create({
-                nome: 'Administrador',
-                email: adminEmail,
-                senha: 'admin123', // A senha será 'hasheada' automaticamente pela entidade
-                role: Role.ADMIN,
-            });
-            await this.usuarioRepository.save(adminUser);
-            this.logger.log('Utilizador Admin criado com sucesso!');
-        } else {
-            this.logger.log('Utilizador Admin já existe.');
-        }
-    }
         async create( createUsuarioDto: CreateUsuarioDto): Promise<UsuarioResponseDto>{
            const senhaHash = await bcrypt.hash(createUsuarioDto.senha,10)
 
