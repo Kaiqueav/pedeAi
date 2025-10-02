@@ -1,17 +1,18 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
 
-
 dotenv.config();
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
-  url: process.env.DATABASE_URL, 
-  entities: ['dist/**/*.entity.js'], 
-  migrations: ['dist/db/migrations/*.js'], 
+  url: process.env.DATABASE_URL,
+  // Caminho correto para encontrar as entidades em desenvolvimento E produção
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  // Caminho correto para encontrar as migrações em desenvolvimento E produção
+  migrations: [__dirname + '/migrations/*{.ts,.js}'],
   synchronize: false,
   ssl: {
-    rejectUnauthorized: false, 
+    rejectUnauthorized: false,
   },
 };
 
