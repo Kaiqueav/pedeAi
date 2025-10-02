@@ -6,15 +6,17 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
+import { JwtAuthGuard } from './guards/jwt-auth.guards';
+import { RolesGuard } from './guards/roles.guards';
 
 @Module({
-  // 3. Adicionar os módulos à lista de imports
+
   imports: [
-    UsuarioModule, // Disponibiliza o UsuarioService
+    UsuarioModule, 
     PassportModule,
-    ConfigModule, // Disponibiliza o ConfigService para injeção
+    ConfigModule, 
     JwtModule.registerAsync({
-      imports: [ConfigModule], // Garante que o ConfigService está disponível para esta factory
+      imports: [ConfigModule], 
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const secret = configService.get<string>('JWT_SECRET');
@@ -23,13 +25,13 @@ import { JwtStrategy } from './jwt.strategy';
         }
         return {
           secret: secret,
-          signOptions: { expiresIn: '1d' }, // O token expira em 1 dia
+          signOptions: { expiresIn: '1d' }, 
         };
       },
     }),
   ],
   controllers: [AuthController],
   // 4. Declarar os providers do módulo
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
 })
 export class AuthModule {}

@@ -4,6 +4,8 @@ import { Produto } from './entities/produto.entity';
 import { Repository } from 'typeorm';
 import { CreateProdutoDto } from './dtos/create-produto.dto';
 import { UpdateProdutoDto } from './dtos/update-produto.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { off } from 'process';
 
 @Injectable()
 export class ProdutoService {
@@ -19,8 +21,12 @@ export class ProdutoService {
     return this.produtoRepository.save(produto);
   }
 
-  findAll():Promise<Produto[]>{
-    return this.produtoRepository.find();
+  findAll(paginationDto: PaginationDto):Promise<Produto[]>{
+    const{ limit, offset} = paginationDto
+    return this.produtoRepository.find({
+      take: limit,
+      skip: offset,
+    });
   }
   async findOne(id:string): Promise<Produto>{
 

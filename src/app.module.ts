@@ -25,9 +25,11 @@ import { EventsModule } from './events/events.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
+
       url: configService.get<string>('DATABASE_URL'), 
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: false,
+
         ssl: {
           rejectUnauthorized: false 
         } 
@@ -42,6 +44,8 @@ import { EventsModule } from './events/events.module';
      EventsModule,
     ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+   
+  ],
 })
 export class AppModule {}
