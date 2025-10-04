@@ -7,7 +7,7 @@ export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
   url: process.env.DATABASE_URL,
   
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  entities: [__dirname + '/**/*.entity{.ts,.js}'],
   
   migrations: [__dirname + '/migrations/*{.ts,.js}'],
   synchronize: false,
