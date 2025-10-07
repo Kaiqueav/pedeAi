@@ -1,4 +1,5 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
+import { CategoriaProduto } from "../../produto/entities/produto.entity";
 import * as bcrypt from 'bcrypt';
 export class InitialSchema1759369159378 implements MigrationInterface {
     name = 'InitialSchema1759369159378'
@@ -32,6 +33,49 @@ export class InitialSchema1759369159378 implements MigrationInterface {
                 'garcom',
             ]
         );
+
+
+         const produtos = [
+            // Pratos
+            { nome: 'Moqueca Capixaba', descricao: 'Cozido de peixe fresco, tomate, coentro e urucum. Acompanha arroz, pirão e farofa.', preco: 115.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Feijoada Completa', descricao: 'Cozido de feijão preto com carnes de porco. Servida com arroz, couve, farofa, torresmo e laranja.', preco: 70.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Picanha na Chapa com Alho', descricao: 'Suculenta picanha grelhada com alho frito. Acompanha batata frita, arroz à grega, farofa e vinagrete.', preco: 95.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Galinhada com Pequi', descricao: 'Arroz cremoso com frango em pedaços e o fruto do cerrado, pequi. Sabor e aroma únicos.', preco: 60.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Bobó de Camarão', descricao: 'Creme aveludado de mandioca, leite de coco, azeite de dendê e camarões frescos. Servido com arroz.', preco: 88.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Escondidinho de Carne Seca', descricao: 'Purê cremoso de mandioca gratinado com recheio generoso de carne seca desfiada e refogada.', preco: 52.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Baião de Dois com Queijo Coalho', descricao: 'Arroz e feijão fradinho com carne seca, linguiça, bacon e pedaços de queijo coalho tostado.', preco: 48.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Virado à Paulista', descricao: 'Bisteca de porco, tutu de feijão, arroz, couve, ovo frito e banana à milanesa.', preco: 65.00, categoria: CategoriaProduto.PRATO },
+            { nome: 'Risoto de Funghi Secchi', descricao: 'Arroz arbóreo cozido lentamente em caldo de legumes com cogumelos funghi secchi e parmesão.', preco: 75.00, categoria: CategoriaProduto.PRATO },
+
+            // Bebidas
+            { nome: 'Caipirinha Tradicional', descricao: 'Cachaça de qualidade, limão taiti fresco, açúcar e gelo.', preco: 20.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Suco de Abacaxi com Hortelã', descricao: 'Combinação clássica e extremamente refrescante da fruta com o frescor da hortelã.', preco: 14.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Caldo de Cana', descricao: 'A popular garapa, extraída na hora da moagem da cana. Pode ser servida com limão ou abacaxi.', preco: 12.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Cerveja Artesanal IPA', descricao: 'Uma India Pale Ale local, com amargor pronunciado e aromas cítricos e florais.', preco: 28.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Água de Coco Natural', descricao: 'Servida diretamente do coco verde gelado, a bebida hidratante por excelência.', preco: 12.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Suco de Cupuaçu', descricao: 'Feito com a polpa da fruta amazônica, de sabor exótico, que mistura acidez e notas de chocolate.', preco: 16.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Quentão (Sazonal)', descricao: 'Cozido de cachaça ou vinho com gengibre, canela, cravo e açúcar. Servido quente.', preco: 14.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Batida de Coco', descricao: 'Coquetel cremoso com cachaça, leite de coco e leite condensado, batidos com gelo.', preco: 23.00, categoria: CategoriaProduto.BEBIDA },
+            { nome: 'Café Coado na Hora', descricao: 'Café brasileiro de grãos selecionados, moído e coado na hora.', preco: 10.00, categoria: CategoriaProduto.BEBIDA },
+
+            // Sobremesas
+            { nome: 'Pudim de Leite Condensado', descricao: 'Um clássico cremoso, coberto por uma calda de caramelo dourada e brilhante.', preco: 20.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Brigadeirão', descricao: 'Uma versão maior e mais cremosa do brigadeiro, com a consistência de um pudim de chocolate intenso.', preco: 23.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Mousse de Maracujá', descricao: 'Leve, aerado e com o equilíbrio perfeito entre o doce e o azedo da fruta.', preco: 21.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Açaí na Tigela', descricao: 'Polpa de açaí batida, servida como um creme denso com frutas frescas e granola.', preco: 28.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Romeu e Julieta', descricao: 'Combinação mineira de queijo minas fresco com uma fatia generosa de goiabada cascão.', preco: 20.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Cartola', descricao: 'Sobremesa típica de Pernambuco: banana frita na manteiga coberta com queijo coalho assado.', preco: 25.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Quindim', descricao: 'Iguaria brilhante e amarela, feita de gema de ovo, açúcar e coco ralado.', preco: 14.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Torta Holandesa', descricao: 'Base de biscoito, recheio cremoso de baunilha e cobertura de ganache de chocolate.', preco: 27.00, categoria: CategoriaProduto.SOBREMESA },
+            { nome: 'Sagu com Creme', descricao: 'Bolinhas de sagu cozidas em vinho tinto com cravo e canela, servidas com creme de baunilha.', preco: 19.00, categoria: CategoriaProduto.SOBREMESA },
+        ];
+
+        for (const produto of produtos) {
+            await queryRunner.query(
+                `INSERT INTO \`produtos\` (nome, descricao, preco, categoria) VALUES (?, ?, ?, ?)`,
+                [produto.nome, produto.descricao, produto.preco, produto.categoria]
+            );
+        }
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
